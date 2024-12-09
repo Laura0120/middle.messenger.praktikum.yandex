@@ -31,10 +31,8 @@ export default class App {
         console.log(navLinks)
         navLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-
                 e.preventDefault();
                 this.changePage(e.target.dataset.page);
-
             });
         });
     }
