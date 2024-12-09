@@ -13,4 +13,4 @@ https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=1
 
 Ссылки:
 На веб-приложение:
-Netlify: 
+Netlify: https://laura-messenger.netlify.app/
