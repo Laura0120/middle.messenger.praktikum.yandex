@@ -1,5 +1,8 @@
-export default
+export const editeProfile =
 `<div class="page">
+    <header>
+        {{> Navigation}}
+    </header>
     <main>
         <h1>Редактирование профиля</h1>
         <form class="form_wrapper">
@@ -9,7 +12,7 @@ export default
             {{> Input id="second_name" name="second_name" type="text" placeholder="Фамилия"}}
             {{> Input id="display_name" name="display_name" type="text" placeholder="Имя в чате"}}
             {{> Input id="phone" name="phone" type="text" placeholder="Телефон"}}
-            {{> Button type="submit" text="Сохранить" className="button"}}
+            {{> Button type="submit" text="Сохранить" class="button"}}
         </form>
     </main>
 </div>`

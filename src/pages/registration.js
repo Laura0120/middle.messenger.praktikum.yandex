@@ -1,5 +1,8 @@
-export default
+export const registration =
 `<div class="page">
+    <header>
+        {{> Navigation}}
+    </header>
     <main class="form_block">
         <h1 class="form_title">Регистрация</h1>
         <form>
@@ -10,8 +13,8 @@ export default
             {{> Input id="phone" name="phone" type="text" placeholder="Телефон"}}
             {{> Input id="password" name="password" type="password" placeholder="Пароль"}}
             {{> Input id="repeatPassword" name="repeatPassword" type="password" placeholder="Пароль (еще раз)"}}
-            {{> Button type="submit" text="Зарегистрироваться" className="button"}}
+            {{> Button type="submit" text="Зарегистрироваться" class="button"}}
         </form>
-        {{> Link href="" text="Войти" className="link"}}
+        {{> Link href="" text="Войти" class="link"}}
     </main>
 </div>`
