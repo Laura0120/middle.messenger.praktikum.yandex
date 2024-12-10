@@ -1,5 +1,8 @@
-export default
+export const profile =
 `<div class="page">
+    <header>
+        {{> Navigation}}
+    </header>
     <main>
         <h1>Профиль</h1>
         <form class="form_wrapper">
@@ -12,9 +15,9 @@ export default
             {{> Input id="phone" name="phone" type="text" placeholder="Телефон"}}
         </form>
         <div class="form_wrapper">
-            {{> Link href="" text="Изменить данные" className="link"}}
-            {{> Link href="" text="Изменить пароль" className="link"}}
-            {{> Link href="" text="Выйти" className="link"}}
+            {{> Link href="" text="Изменить данные" class="link"}}
+            {{> Link href="" text="Изменить пароль" class="link"}}
+            {{> Link href="" text="Выйти" class="link"}}
         <div/>
     <main/>
 </div>`
