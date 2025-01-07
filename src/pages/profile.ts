@@ -1,6 +1,6 @@
 import Block from '../framework/Block';
 import Link from '../components/Link';
-import Form from '../components/form';
+import Form from '../components/Form';
 import InputBlock from '../components/InputBlock';
 import Label from '../components/Label';
 import Input from '../components/Input';
