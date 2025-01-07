@@ -12,7 +12,7 @@ export default class Link extends Block {
     super({
       ...props,
       events: {
-        click: (e) => {
+        click: (e: Event) => {
           e.preventDefault();
           if (props.onClick) {
             props.onClick(e);

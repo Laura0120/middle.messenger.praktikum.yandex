@@ -11,7 +11,6 @@ import { editeProfileFormInputs } from '../const/editeProfileForm';
 
 interface IEditeProfileProps {
   Navigation: Navigation;
-  Form: Form;
 }
 export class EditeProfile extends Block {
   protected state: TFormState;
@@ -23,7 +22,7 @@ export class EditeProfile extends Block {
         Inputs: Object.values(editeProfileFormInputs).map(
           ({ name, type, placeholder, errorMessage, ariaErrorMessage, pattern, required }) =>
             new InputBlock({
-              Label: new Label({ name, label: placeholder }),
+              Label: new Label({ name, label: placeholder ?? '' }),
               Input: new Input({
                 name,
                 type,
@@ -39,8 +38,8 @@ export class EditeProfile extends Block {
                 required,
               }),
               ErrorMessage: new ErrorMessage({
-                errorMessage,
-                ariaErrorMessage,
+                errorMessage: errorMessage ?? '',
+                ariaErrorMessage: ariaErrorMessage ?? '',
               }),
             }),
         ),

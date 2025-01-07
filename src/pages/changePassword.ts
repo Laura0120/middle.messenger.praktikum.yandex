@@ -11,7 +11,6 @@ import { changePasswordForm } from '../const/changePasswordForm';
 
 interface IChangePasswordProps {
   Navigation: Navigation;
-  Form: Form;
 }
 export class ChangePassword extends Block {
   protected state: TFormState;
@@ -23,7 +22,7 @@ export class ChangePassword extends Block {
         Inputs: Object.values(changePasswordForm).map(
           ({ name, placeholder, type, errorMessage, ariaErrorMessage, pattern, required }) =>
             new InputBlock({
-              Label: new Label({ name, label: placeholder }),
+              Label: new Label({ name, label: placeholder ?? '' }),
               Input: new Input({
                 name,
                 type,
@@ -39,8 +38,8 @@ export class ChangePassword extends Block {
                 },
               }),
               ErrorMessage: new ErrorMessage({
-                errorMessage,
-                ariaErrorMessage,
+                errorMessage: errorMessage ?? '',
+                ariaErrorMessage: ariaErrorMessage ?? '',
               }),
             }),
         ),

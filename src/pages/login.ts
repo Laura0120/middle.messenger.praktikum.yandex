@@ -12,8 +12,6 @@ import { loginFormInputs } from '../const/loginForm';
 
 interface ILoginProps {
   Navigation: Navigation;
-  Link: Link;
-  Form: Form;
 }
 export class Login extends Block {
   protected state: TFormState;
@@ -25,7 +23,7 @@ export class Login extends Block {
         Inputs: Object.values(loginFormInputs).map(
           ({ name, type, placeholder, errorMessage, ariaErrorMessage, pattern, required }) =>
             new InputBlock({
-              Label: new Label({ name, label: placeholder }),
+              Label: new Label({ name, label: placeholder ?? '' }),
               Input: new Input({
                 name,
                 type,
@@ -41,8 +39,8 @@ export class Login extends Block {
                 required,
               }),
               ErrorMessage: new ErrorMessage({
-                errorMessage,
-                ariaErrorMessage,
+                errorMessage: errorMessage ?? '',
+                ariaErrorMessage: ariaErrorMessage ?? '',
               }),
             }),
         ),

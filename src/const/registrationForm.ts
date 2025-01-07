@@ -3,13 +3,14 @@ import {
   emailInput,
   errorMessage,
   firstNameInput,
+  IInput,
   loginInput,
   passwordInput,
   phoneInput,
   secondNameInput,
 } from './inputs';
 
-export const registrationFormInputs = {
+export const registrationFormInputs: Record<string, IInput> = {
   email: emailInput,
   login: loginInput,
   first_name: firstNameInput,

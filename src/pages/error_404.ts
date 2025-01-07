@@ -4,7 +4,6 @@ import Navigation from '../components/Navigation';
 
 interface IError404Props {
   Navigation: Navigation;
-  Link: Link;
 }
 export class Error404 extends Block {
   constructor(props: IError404Props) {
