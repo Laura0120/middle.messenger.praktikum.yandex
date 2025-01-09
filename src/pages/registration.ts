@@ -12,8 +12,6 @@ import { registrationFormInputs } from '../const/registrationForm';
 
 interface IRegistrationProps {
   Navigation: Navigation;
-  Link: Link;
-  Form: Form;
 }
 export class Registration extends Block {
   protected state: TFormState;
@@ -25,7 +23,7 @@ export class Registration extends Block {
         Inputs: Object.values(registrationFormInputs).map(
           ({ name, type, placeholder, errorMessage, ariaErrorMessage, pattern, required }) =>
             new InputBlock({
-              Label: new Label({ name, label: placeholder }),
+              Label: new Label({ name, label: placeholder ?? '' }),
               Input: new Input({
                 name,
                 type,
@@ -41,8 +39,8 @@ export class Registration extends Block {
                 required,
               }),
               ErrorMessage: new ErrorMessage({
-                errorMessage,
-                ariaErrorMessage,
+                errorMessage: errorMessage ?? '',
+                ariaErrorMessage: ariaErrorMessage ?? '',
               }),
             }),
         ),

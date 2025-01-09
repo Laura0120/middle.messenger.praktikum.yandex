@@ -1,8 +1,18 @@
 import { emailPattern, loginPattern, messagePattern, namePattern, passwordPattern, phonePattern } from './patterns';
 
+export interface IInput {
+  name: string;
+  type: string;
+  placeholder?: string;
+  pattern?: RegExp;
+  errorMessage?: string;
+  ariaErrorMessage?: string;
+  required?: boolean;
+  disabled?: boolean;
+}
 export const errorMessage = 'Недопустимое значение';
 
-export const loginInput = {
+export const loginInput: IInput = {
   name: 'login',
   placeholder: 'Логин',
   type: 'text',
@@ -11,7 +21,7 @@ export const loginInput = {
   ariaErrorMessage: 'login-errors',
   required: true,
 };
-export const passwordInput = {
+export const passwordInput: IInput = {
   name: 'password',
   placeholder: 'Пароль',
   type: 'password',
@@ -20,7 +30,7 @@ export const passwordInput = {
   ariaErrorMessage: 'password-errors',
   required: true,
 };
-export const emailInput = {
+export const emailInput: IInput = {
   name: 'email',
   placeholder: 'Почта',
   type: 'text',
@@ -29,7 +39,7 @@ export const emailInput = {
   ariaErrorMessage: 'email-errors',
 };
 
-export const firstNameInput = {
+export const firstNameInput: IInput = {
   name: 'first_name',
   placeholder: 'Имя',
   type: 'text',
@@ -38,7 +48,7 @@ export const firstNameInput = {
   ariaErrorMessage: 'firstName-errors',
 };
 
-export const secondNameInput = {
+export const secondNameInput: IInput = {
   name: 'second_name',
   placeholder: 'Фамилия',
   type: 'text',
@@ -47,7 +57,7 @@ export const secondNameInput = {
   ariaErrorMessage: 'secondName-errors',
 };
 
-export const phoneInput = {
+export const phoneInput: IInput = {
   name: 'phone',
   placeholder: 'Телефон',
   type: 'tel',
@@ -56,7 +66,7 @@ export const phoneInput = {
   ariaErrorMessage: 'phone-errors',
 };
 
-export const messageInput = {
+export const messageInput: IInput = {
   name: 'message',
   placeholder: 'Сообщение',
   type: 'text',

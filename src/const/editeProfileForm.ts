@@ -1,6 +1,6 @@
-import { emailInput, firstNameInput, loginInput, phoneInput, secondNameInput } from './inputs';
+import { emailInput, firstNameInput, IInput, loginInput, phoneInput, secondNameInput } from './inputs';
 
-export const editeProfileFormInputs = {
+export const editeProfileFormInputs: Record<string, IInput> = {
   email: emailInput,
   login: loginInput,
   first_name: firstNameInput,

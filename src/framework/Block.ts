@@ -25,12 +25,15 @@ export default class Block {
 
   protected eventBus: () => EventBus;
 
+  protected _controller: AbortController;
+
   constructor(propsWithChildren: BlockProps = {}) {
     const eventBus = new EventBus();
     const { props, children, lists } = this._getChildrenPropsAndProps(propsWithChildren);
     this.props = this._makePropsProxy({ ...props });
     this.children = children;
     this.lists = this._makePropsProxy({ ...lists });
+    this._controller = new AbortController();
     this.eventBus = () => eventBus;
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
@@ -40,9 +43,15 @@ export default class Block {
     const { events = {} } = this.props;
     Object.keys(events).forEach((eventName) => {
       if (this._element) {
-        this._element.addEventListener(eventName, events[eventName]);
+        this._element.addEventListener(eventName, events[eventName], { signal: this._controller.signal });
       }
     });
+  }
+
+  private _removeEvents(): void {
+    if (this._element) {
+      this._controller.abort();
+    }
   }
 
   private _registerEvents(eventBus: EventBus): void {
@@ -79,7 +88,10 @@ export default class Block {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
-    return true;
+    if (oldProps === newProps) {
+      return true;
+    }
+    return false;
   }
 
   private _getChildrenPropsAndProps(propsAndChildren: BlockProps): {
@@ -179,10 +191,12 @@ export default class Block {
 
     const newElement = fragment.content.firstElementChild as HTMLElement;
     if (this._element && newElement) {
-      this._element.replaceWith(newElement);
+      this._removeEvents();
+      this._element?.replaceWith(newElement);
     }
     this._element = newElement;
     this._addEvents();
+
     this.addAttributes();
   }
 

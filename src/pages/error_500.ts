@@ -4,7 +4,6 @@ import Navigation from '../components/Navigation';
 
 interface IError500Props {
   Navigation: Navigation;
-  Link: Link;
 }
 
 export class Error500 extends Block {

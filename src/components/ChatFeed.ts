@@ -7,7 +7,6 @@ import { formValidate, getFormData, TFormState } from '../helpers/formValidation
 import { messageInput } from '../const/inputs';
 
 interface IChatFeedProps {
-  Form: Form;
   contactName: string;
   onClick?: () => void;
 }

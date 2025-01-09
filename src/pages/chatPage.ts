@@ -4,8 +4,12 @@ import Link from '../components/Link';
 import ChatItem from '../components/ChatItem';
 import ChatFeed from '../components/ChatFeed';
 
+import Navigation from '../components/Navigation';
+interface IChatPageProps {
+  Navigation: Navigation;
+}
 export class ChatPage extends Block {
-  constructor(props: any) {
+  constructor(props: IChatPageProps) {
     super({
       ...props,
 

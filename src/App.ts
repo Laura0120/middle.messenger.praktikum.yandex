@@ -20,16 +20,13 @@ const PageConstructors = {
 export default class App {
   private state: AppState;
 
-  private appElement: HTMLElement | null;
-
   constructor() {
     this.state = {
       currentPage: PAGE_NAMES.login.name,
     };
-    this.appElement = document.getElementById('app');
   }
 
-  getPage({ navigation }) {
+  getPage(navigation: Navigation) {
     const CurrentPageConstructor = PageConstructors[this.state.currentPage];
 
     if (!CurrentPageConstructor) {
@@ -41,12 +38,13 @@ export default class App {
 
   render(): void {
     const navigation = new Navigation({
-      onClick: (e) => {
-        this.changePage((e.target as HTMLElement).dataset.page);
+      onClick: (e: Event) => {
+        const element = e.currentTarget as HTMLInputElement;
+        this.changePage(element.dataset.page ?? '');
       },
     });
 
-    const page = this.getPage({ navigation });
+    const page = this.getPage(navigation);
 
     const [pageElement] = document.querySelectorAll('#app');
 
@@ -56,8 +54,8 @@ export default class App {
     pageElement.replaceWith(page.getContent());
   }
 
-  changePage(page) {
-    this.state.currentPage = page;
+  changePage(pageName: string) {
+    this.state.currentPage = pageName;
     this.render();
   }
 }

@@ -1,7 +1,7 @@
 import { passwordPattern } from './patterns';
-import { errorMessage } from './inputs';
+import { errorMessage, IInput } from './inputs';
 
-export const changePasswordForm = {
+export const changePasswordForm: Record<string, IInput> = {
   oldPassword: {
     name: 'oldPassword',
     placeholder: 'Старый пароль',

@@ -12,7 +12,7 @@ export default class Form extends Block {
     super({
       ...props,
       events: {
-        submit: (e) => {
+        submit: (e: Event) => {
           const form = this.getContent() as HTMLFormElement;
           form.checkValidity();
           e.preventDefault();

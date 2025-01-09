@@ -1,15 +1,9 @@
 import Block from '../framework/Block';
+import { IInput } from '../const/inputs';
 
-export interface IInputProps {
-  name: string;
-  type: string;
-  placeholder?: string;
-  errorMessage?: string;
-  pattern?: RegExp;
-  required?: boolean;
-  disabled?: boolean;
-  setInputValid?: (boolean) => void;
-  setInputValue?: (string) => void;
+export interface IInputProps extends IInput {
+  setInputValid?: (valid: boolean) => void;
+  setInputValue?: (value: string) => void;
 }
 export default class Input extends Block {
   protected state: {
@@ -21,8 +15,9 @@ export default class Input extends Block {
     super({
       ...props,
       events: {
-        blur: (e) => {
-          const value = e.currentTarget.value;
+        blur: (e: Event) => {
+          const currentTarget = e.currentTarget as HTMLInputElement;
+          const value = currentTarget.value;
           let valid;
           if (value) {
             valid = props.pattern?.test(value) ?? true;
@@ -35,8 +30,9 @@ export default class Input extends Block {
           this.state.valid = valid;
           this.changeStyle();
         },
-        input: (e) => {
-          const value = e.currentTarget.value;
+        input: (e: Event) => {
+          const currentTarget = e.currentTarget as HTMLInputElement;
+          const value = currentTarget.value;
           if (props.setInputValue) {
             props.setInputValue(value);
           }

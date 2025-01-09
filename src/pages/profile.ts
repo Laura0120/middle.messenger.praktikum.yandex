@@ -16,8 +16,6 @@ const profileLinks = [
 
 interface IProfileProps {
   Navigation: Navigation;
-  Links: Link[];
-  Form: Form;
 }
 export class Profile extends Block {
   constructor(props: IProfileProps) {
@@ -27,7 +25,7 @@ export class Profile extends Block {
         Inputs: Object.values(profileFormInputs).map(
           ({ name, type, placeholder, errorMessage, ariaErrorMessage, pattern, required, disabled }) =>
             new InputBlock({
-              Label: new Label({ name, label: placeholder }),
+              Label: new Label({ name, label: placeholder ?? '' }),
               Input: new Input({
                 name,
                 type,
@@ -38,8 +36,8 @@ export class Profile extends Block {
                 disabled,
               }),
               ErrorMessage: new ErrorMessage({
-                errorMessage,
-                ariaErrorMessage,
+                errorMessage: errorMessage ?? '',
+                ariaErrorMessage: ariaErrorMessage ?? '',
               }),
             }),
         ),
