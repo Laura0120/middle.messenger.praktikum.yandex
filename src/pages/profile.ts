@@ -4,26 +4,57 @@ import Form from '../components/Form';
 import InputBlock from '../components/InputBlock';
 import Label from '../components/Label';
 import Input from '../components/Input';
-import Navigation from '../components/Navigation';
-import ErrorMessage from '../components/InputErrorMessage';
 import { profileFormInputs } from '../const/profileForm';
+import { withUser } from '../store/utils';
+import { goToPath } from '../helpers/goToPath';
+import { authController } from '../api/auth/authController';
+import AvatarModal from '../components/AvatarModal';
+import { render } from '../helpers/render';
+import Button from '../components/Button';
 
 const profileLinks = [
-  { href: '#', text: 'Изменить данные', class: 'link' },
-  { href: '#', text: 'Изменить пароль', class: 'link' },
-  { href: '#', text: 'Выйти', class: 'link' },
+  {
+    text: 'Изменить данные',
+    class: 'link',
+    onClick: () => {
+      goToPath('/settings-edite');
+    },
+  },
+  {
+    text: 'Изменить пароль',
+    class: 'link',
+    onClick: () => {
+      goToPath('/settings-changePassword');
+    },
+  },
+  {
+    text: 'Выйти',
+    class: 'link',
+    onClick: authController.logout,
+  },
 ];
 
 interface IProfileProps {
-  Navigation: Navigation;
+  user: Record<string, string>;
 }
-export class Profile extends Block {
+
+class Profile extends Block {
+  protected _modal: Block | null = null;
+
   constructor(props: IProfileProps) {
     super({
       ...props,
+      Avatar: new Button({
+        text: props.user?.avatar
+          ? `<img class='image' src='https://ya-praktikum.tech/api/v2/resources/${props.user?.avatar}' alt='аватар'>`
+          : '',
+        onClick: () => this.openModal(),
+        type: 'button',
+        class: 'avatar',
+      }),
       Form: new Form({
         Inputs: Object.values(profileFormInputs).map(
-          ({ name, type, placeholder, errorMessage, ariaErrorMessage, pattern, required, disabled }) =>
+          ({ name, type, placeholder, errorMessage, disabled }) =>
             new InputBlock({
               Label: new Label({ name, label: placeholder ?? '' }),
               Input: new Input({
@@ -31,33 +62,44 @@ export class Profile extends Block {
                 type,
                 placeholder,
                 errorMessage,
-                pattern,
-                required,
                 disabled,
-              }),
-              ErrorMessage: new ErrorMessage({
-                errorMessage: errorMessage ?? '',
-                ariaErrorMessage: ariaErrorMessage ?? '',
+                value: props.user?.[name],
               }),
             }),
         ),
       }),
-      Links: profileLinks.map((item) => new Link({ href: item.href, text: item.text, class: item.class })),
+      Links: profileLinks.map((item) => new Link({ text: item.text, class: item.class, onClick: item.onClick })),
     });
+    this._modal = null;
+  }
+  openModal() {
+    if (!this._modal) {
+      this._modal = new AvatarModal({});
+      if (this._modal) {
+        render('profile-modal', this._modal);
+      }
+      return;
+    }
+
+    render('profile-modal', new AvatarModal({}));
   }
 
   override render(): string {
-    return `<div class="page" id="app">
-        <header>
-          {{{ Navigation }}}
-        </header>
+    console.log(this.props);
+    return `<div class="page">
         <main>
           <h1>Профиль</h1>
+          <div class='avatar-container'>
+              {{{ Avatar }}}
+          </div>
           {{{ Form }}}
           <div class="form_wrapper">
             {{{ Links }}}
           <div/>
         <main/>
+        <div  id="profile-modal"></div>
       </div>`;
   }
 }
+
+export default withUser(Profile);

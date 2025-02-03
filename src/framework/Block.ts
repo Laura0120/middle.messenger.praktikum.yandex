@@ -1,10 +1,10 @@
 import EventBus, { EventCallback } from './EventBus';
 import Handlebars from 'handlebars';
 
-interface BlockProps {
+export interface BlockProps {
   [key: string]: any;
 }
-
+export type BlockClass = { new (props: BlockProps): Block };
 export default class Block {
   static EVENTS = {
     INIT: 'init',

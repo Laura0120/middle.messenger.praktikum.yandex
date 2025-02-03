@@ -9,6 +9,7 @@ export interface IInput {
   ariaErrorMessage?: string;
   required?: boolean;
   disabled?: boolean;
+  value?: string;
 }
 export const errorMessage = 'Недопустимое значение';
 

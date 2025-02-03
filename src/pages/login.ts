@@ -1,22 +1,21 @@
-import Block from '../framework/Block';
+import Block, { BlockProps } from '../framework/Block';
 import Button from '../components/Button';
-import { formValidate, getFormData, TFormState } from '../helpers/formValidation';
+import { formValidate, TFormState, toFormData } from '../helpers/formValidation';
 import Form from '../components/Form';
 import InputBlock from '../components/InputBlock';
 import Label from '../components/Label';
 import ErrorMessage from '../components/InputErrorMessage';
 import Input from '../components/Input';
 import Link from '../components/Link';
-import Navigation from '../components/Navigation';
 import { loginFormInputs } from '../const/loginForm';
+import { goToPath } from '../helpers/goToPath';
+import { authController } from '../api/auth/authController';
+import { withUser } from '../store/utils';
 
-interface ILoginProps {
-  Navigation: Navigation;
-}
-export class Login extends Block {
+class Login extends Block {
   protected state: TFormState;
 
-  constructor(props: ILoginProps) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       Form: new Form({
@@ -53,10 +52,16 @@ export class Login extends Block {
           if (!formValidate(this.state)) {
             return;
           }
-          console.log(getFormData(this.state));
+          authController.signIn(toFormData(this.state));
         },
       }),
-      Link: new Link({ href: '#', text: 'Нет аккаунта?', class: 'link' }),
+      Link: new Link({
+        text: 'Нет аккаунта?',
+        class: 'link',
+        onClick: (event: Event) => {
+          goToPath('/sign-up', event);
+        },
+      }),
     });
 
     this.state = Object.keys(loginFormInputs).reduce<TFormState>((state, inputName) => {
@@ -66,10 +71,7 @@ export class Login extends Block {
   }
 
   override render(): string {
-    return `<div class="page" id="app">
-        <header>
-          {{{ Navigation }}}
-        </header>
+    return `<div class="page">
         <main class="form_block">
           <h1 class="form_title">Вход</h1>
           {{{ Form }}}
@@ -78,3 +80,4 @@ export class Login extends Block {
       </div>`;
   }
 }
+export default withUser(Login);

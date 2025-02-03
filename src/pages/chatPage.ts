@@ -1,20 +1,17 @@
-import Block from '../framework/Block';
+import Block, { BlockProps } from '../framework/Block';
 import Input from '../components/Input';
 import Link from '../components/Link';
 import ChatItem from '../components/ChatItem';
 import ChatFeed from '../components/ChatFeed';
+import { goToPath } from '../helpers/goToPath';
 
-import Navigation from '../components/Navigation';
-interface IChatPageProps {
-  Navigation: Navigation;
-}
 export class ChatPage extends Block {
-  constructor(props: IChatPageProps) {
+  constructor(props: BlockProps) {
     super({
       ...props,
 
       Input: new Input({ name: 'search', type: 'search', placeholder: 'Поиск' }),
-      Link: new Link({ href: '#', text: 'Профиль', class: 'link' }),
+      Link: new Link({ href: '#', text: 'Профиль', class: 'link', onClick: () => goToPath('/settings') }),
       ChatFeed: new ChatFeed({ contactName: 'Андрей' }),
       ChatItems: [
         new ChatItem({
@@ -29,10 +26,7 @@ export class ChatPage extends Block {
   }
 
   override render(): string {
-    return `<div class="page" id="app">
-        <header>
-            {{{ Navigation }}}
-        </header>
+    return `<div class="page">
         <main class="main">
           <h1 class="sr-only">Список чатов</h1>
           <div class="chats_wrapper">

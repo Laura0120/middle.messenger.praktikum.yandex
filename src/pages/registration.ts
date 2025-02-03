@@ -1,22 +1,20 @@
-import Block from '../framework/Block';
+import Block, { BlockProps } from '../framework/Block';
 import Button from '../components/Button';
-import { formValidate, getFormData, TFormState } from '../helpers/formValidation';
+import { formValidate, TFormState, toFormData } from '../helpers/formValidation';
 import Form from '../components/Form';
-import Navigation from '../components/Navigation';
 import InputBlock from '../components/InputBlock';
 import Label from '../components/Label';
 import ErrorMessage from '../components/InputErrorMessage';
 import Input from '../components/Input';
 import Link from '../components/Link';
 import { registrationFormInputs } from '../const/registrationForm';
+import { authController } from '../api/auth/authController';
+import { goToPath } from '../helpers/goToPath';
 
-interface IRegistrationProps {
-  Navigation: Navigation;
-}
 export class Registration extends Block {
   protected state: TFormState;
 
-  constructor(props: IRegistrationProps) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       Form: new Form({
@@ -53,10 +51,19 @@ export class Registration extends Block {
           if (!formValidate(this.state)) {
             return;
           }
-          console.log(getFormData(this.state));
+          authController.signUp(toFormData(this.state)).then(() => {
+            goToPath('/messenger');
+          });
         },
       }),
-      Link: new Link({ href: '#', text: 'Войти', class: 'link' }),
+      Link: new Link({
+        href: '#',
+        text: 'Войти',
+        class: 'link',
+        onClick: (event: Event) => {
+          goToPath('/', event);
+        },
+      }),
     });
     this.state = Object.keys(registrationFormInputs).reduce<TFormState>((state, inputName) => {
       state[inputName] = { value: '', valid: true };
@@ -65,10 +72,7 @@ export class Registration extends Block {
   }
 
   override render(): string {
-    return `<div class="page" id="app">
-        <header>
-          {{{ Navigation }}}
-        </header>
+    return `<div class="page">
         <main class="form_block">
           <h1 class="form_title">Регистрация</h1>
           {{{ Form }}}

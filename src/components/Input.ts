@@ -1,7 +1,7 @@
-import Block from '../framework/Block';
+import Block, { BlockProps } from '../framework/Block';
 import { IInput } from '../const/inputs';
 
-export interface IInputProps extends IInput {
+export interface IInputProps extends IInput, BlockProps {
   setInputValid?: (valid: boolean) => void;
   setInputValue?: (value: string) => void;
 }
@@ -70,6 +70,9 @@ export default class Input extends Block {
     }
     if (this.props.disabled) {
       attributes.push('disabled');
+    }
+    if (this.props.value) {
+      attributes.push(`value=${this.props.value}`);
     }
 
     return `<input ${attributes.join(' ')} 
