@@ -1,34 +1,28 @@
-import store, { StoreEvents } from './store';
+import store, { TStore, StoreEvents } from './store';
 import Block, { BlockProps } from '../framework/Block';
-import { isEqual } from '../helpers/isEqual';
 
-function connect(mapStateToProps: (state: Indexed<unknown>) => Indexed<unknown>) {
+function connect(mapStateToProps: (state: TStore) => TStore) {
   return function (Component: typeof Block) {
     return class extends Component {
       constructor(blockProps: BlockProps) {
-        let state = mapStateToProps(store.getState());
-        super({ ...blockProps?.props, ...state });
+        super({ ...blockProps, ...mapStateToProps(store.getState()) });
+        store.on(StoreEvents.Update, this._addState.bind(this));
+      }
 
-        store.on(StoreEvents.Update, () => {
-          const newState = mapStateToProps(store.getState());
-          if (!isEqual(state, newState)) {
-            this.setProps({ ...mapStateToProps(store.getState()) });
-          }
-
-          state = newState;
-        });
+      _addState() {
+        this.setProps({ ...mapStateToProps(store.getState()) });
       }
     };
   };
 }
 
-export const withUser = connect((state: Indexed<unknown>) => ({ user: state.user }));
+export const withUser = connect((state) => ({ user: { ...state.user } }));
 
-export const withChatsAndUser = connect((state: Indexed<unknown>) => ({
+export const withChatsAndUser = connect((state) => ({
   chats: state.chats,
   selectedChat: state.selectedChat,
   user: state.user,
   selectedChatMessages: state.selectedChatMessages,
 }));
 
-export const withSelectedChats = connect((state: Indexed<unknown>) => ({ selectedChat: state.selectedChat }));
+export const withSelectedChats = connect((state) => ({ selectedChat: state.selectedChat }));

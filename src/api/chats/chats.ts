@@ -1,5 +1,5 @@
 import { HTTPTransport } from '../apiService';
-import { AddUserToChatRequestData, ChatDeleteRequestData, ChatsCreateRequestData, ChatsGetRequestData } from './types';
+import { AddUserToChatRequestData, ChatDeleteRequestData, ChatsGetRequestData } from './types';
 
 const chatsAPIInstance = new HTTPTransport('/api/v2/chats');
 
@@ -7,7 +7,7 @@ function getChats(data: ChatsGetRequestData) {
   return chatsAPIInstance.get('', { data });
 }
 
-function createChat(data: ChatsCreateRequestData) {
+function createChat(data: Record<string, string>) {
   return chatsAPIInstance.post('', { data });
 }
 

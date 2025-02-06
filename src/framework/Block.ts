@@ -1,5 +1,6 @@
 import EventBus, { EventCallback } from './EventBus';
 import Handlebars from 'handlebars';
+import { isEqual } from '../helpers/isEqual';
 
 export interface BlockProps {
   [key: string]: any;
@@ -39,19 +40,33 @@ export default class Block {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  private _addEvents(): void {
-    const { events = {} } = this.props;
+  _addEvents(): void {
+    const { events = {} } = this.props || {};
+
     Object.keys(events).forEach((eventName) => {
+      if (typeof events[eventName] !== 'function') {
+        console.warn(`Invalid event handler for event: ${eventName}`);
+        return;
+      }
+
       if (this._element) {
-        this._element.addEventListener(eventName, events[eventName], { signal: this._controller.signal });
+        this._element.addEventListener(eventName, events[eventName]);
       }
     });
   }
 
-  private _removeEvents(): void {
-    if (this._element) {
-      this._controller.abort();
-    }
+  _removeEvents(): void {
+    const { events = {} } = this.props || {};
+
+    Object.keys(events).forEach((eventName) => {
+      if (typeof events[eventName] !== 'function') {
+        console.warn(`Invalid event handler for event: ${eventName}`);
+        return;
+      }
+      if (this._element) {
+        this._element.removeEventListener(eventName, events[eventName]);
+      }
+    });
   }
 
   private _registerEvents(eventBus: EventBus): void {
@@ -88,10 +103,7 @@ export default class Block {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected componentDidUpdate(oldProps: BlockProps, newProps: BlockProps): boolean {
-    if (oldProps === newProps) {
-      return true;
-    }
-    return false;
+    return !isEqual(oldProps, newProps);
   }
 
   private _getChildrenPropsAndProps(propsAndChildren: BlockProps): {
@@ -106,7 +118,7 @@ export default class Block {
     Object.entries(propsAndChildren).forEach(([key, value]) => {
       if (value instanceof Block) {
         children[key] = value;
-      } else if (Array.isArray(value)) {
+      } else if (Array.isArray(value) && value.some((el) => el instanceof Block)) {
         lists[key] = value;
       } else {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -136,6 +148,7 @@ export default class Block {
   }
 
   public setProps = (nextProps: BlockProps): void => {
+    console.log();
     if (!nextProps) {
       return;
     }
@@ -143,21 +156,15 @@ export default class Block {
     Object.assign(this.props, nextProps);
   };
 
-  public setLists = (nextList: Record<string, any[]>): void => {
-    if (!nextList) {
-      return;
-    }
-
-    Object.assign(this.lists, nextList);
-  };
-
   get element(): HTMLElement | null {
     return this._element;
   }
 
   private _render(): void {
+    this._removeEvents();
     const propsAndStubs = { ...this.props };
     const tmpId = Math.floor(100000 + Math.random() * 900000);
+
     Object.entries(this.children).forEach(([key, child]) => {
       propsAndStubs[key] = `<div data-id="${child._id}"></div>`;
     });
@@ -191,7 +198,6 @@ export default class Block {
 
     const newElement = fragment.content.firstElementChild as HTMLElement;
     if (this._element && newElement) {
-      this._removeEvents();
       this._element?.replaceWith(newElement);
     }
     this._element = newElement;

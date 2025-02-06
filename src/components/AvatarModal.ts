@@ -1,8 +1,7 @@
 import Button from './Button';
 import Input from './Input';
 import Block, { BlockProps } from '../framework/Block';
-import { userController } from '../api/user/userController';
-import { withUser } from '../store/utils';
+import userController from '../api/user/userController';
 import Form from './Form';
 
 class AvatarModal extends Block {
@@ -35,15 +34,17 @@ class AvatarModal extends Block {
 
   handleAdd() {
     const inputElement = this.element?.querySelector('input[type="file"]');
-    // @ts-ignore
+    // @ts-expect-error получаю добавленный файл
     const file = inputElement?.files[0];
 
-    if (file) {
-      const formData = new FormData();
-      formData.append('avatar', file);
-      userController.changeAvatar(formData);
-      this.hide();
+    if (!file) {
+      return;
     }
+
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    userController.changeAvatar(formData).then(() => this.hide());
   }
 
   handleClick(e: Event) {
@@ -59,7 +60,7 @@ class AvatarModal extends Block {
   override render(): string {
     return `
       <div class="modal-backdrop">
-        <div class="modal-change-avatar-content">
+        <div class="modal-content">
           <h2>Загрузите файл</h2>
           {{{ Form }}}
         </div>
@@ -68,4 +69,4 @@ class AvatarModal extends Block {
   }
 }
 
-export default withUser(AvatarModal);
+export default AvatarModal;

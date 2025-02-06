@@ -8,7 +8,7 @@ import Input from '../components/Input';
 import ErrorMessage from '../components/InputErrorMessage';
 import { changePasswordForm } from '../const/changePasswordForm';
 import { withUser } from '../store/utils';
-import { userController } from '../api/user/userController';
+import userController from '../api/user/userController';
 import { goToPath } from '../helpers/goToPath';
 
 class ChangePassword extends Block {
@@ -51,9 +51,7 @@ class ChangePassword extends Block {
           if (!formValidate(this.state)) {
             return;
           }
-          userController.changePassword(toFormData(this.state)).then(() => {
-            goToPath('/settings');
-          });
+          userController.changePassword(toFormData(this.state)).then(() => goToPath('/settings'));
         },
       }),
     });

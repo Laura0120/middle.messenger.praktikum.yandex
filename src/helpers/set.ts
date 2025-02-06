@@ -1,5 +1,5 @@
-import { isObject } from './isEqual';
 import merge from './merge';
+import isObject from './isObject';
 type StringIndexed<T = unknown> = {
   [key: string]: T;
 };
@@ -8,7 +8,7 @@ export function pathToObjectWithValue(path: string, value: unknown) {
   return propList.reduceRight((accumulator, currentValue) => ({ [currentValue]: accumulator }), value);
 }
 
-export function set(object: StringIndexed | unknown, path: string, value: unknown): StringIndexed | unknown {
+export function set(object: StringIndexed, path: string, value: unknown): StringIndexed {
   if (typeof path !== 'string') {
     throw new Error('path must be string');
   }

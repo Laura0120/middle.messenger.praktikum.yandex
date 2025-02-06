@@ -4,13 +4,14 @@ import { Registration } from './pages/registration';
 import Profile from './pages/profile';
 import EditeProfile from './pages/editeProfile';
 import ChangePassword from './pages/changePassword';
-import { ChatPage } from './pages/chatPage';
+import ChatPage from './pages/chatPage';
 import { Error404 } from './pages/error_404';
 import { Error500 } from './pages/error_500';
 
 export default class App {
   constructor() {
     const router = new Router('app');
+
     router
       .use('/', Login)
       .use('/sign-up', Registration)

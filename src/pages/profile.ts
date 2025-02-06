@@ -7,10 +7,10 @@ import Input from '../components/Input';
 import { profileFormInputs } from '../const/profileForm';
 import { withUser } from '../store/utils';
 import { goToPath } from '../helpers/goToPath';
-import { authController } from '../api/auth/authController';
+import authController from '../api/auth/authController';
 import AvatarModal from '../components/AvatarModal';
-import { render } from '../helpers/render';
-import Button from '../components/Button';
+import render from '../helpers/render';
+import Avatar from '../components/Avatar';
 
 const profileLinks = [
   {
@@ -30,7 +30,7 @@ const profileLinks = [
   {
     text: 'Выйти',
     class: 'link',
-    onClick: authController.logout,
+    onClick: () => authController.logout(),
   },
 ];
 
@@ -39,18 +39,13 @@ interface IProfileProps {
 }
 
 class Profile extends Block {
-  protected _modal: Block | null = null;
-
   constructor(props: IProfileProps) {
     super({
       ...props,
-      Avatar: new Button({
-        text: props.user?.avatar
-          ? `<img class='image' src='https://ya-praktikum.tech/api/v2/resources/${props.user?.avatar}' alt='аватар'>`
-          : '',
-        onClick: () => this.openModal(),
-        type: 'button',
-        class: 'avatar',
+      Avatar: new Avatar({
+        events: {
+          click: () => this.openModal(),
+        },
       }),
       Form: new Form({
         Inputs: Object.values(profileFormInputs).map(
@@ -70,34 +65,25 @@ class Profile extends Block {
       }),
       Links: profileLinks.map((item) => new Link({ text: item.text, class: item.class, onClick: item.onClick })),
     });
-    this._modal = null;
   }
-  openModal() {
-    if (!this._modal) {
-      this._modal = new AvatarModal({});
-      if (this._modal) {
-        render('profile-modal', this._modal);
-      }
-      return;
-    }
 
+  openModal() {
     render('profile-modal', new AvatarModal({}));
   }
 
   override render(): string {
-    console.log(this.props);
-    return `<div class="page">
+    return `<div class="page profile">
         <main>
           <h1>Профиль</h1>
           <div class='avatar-container'>
-              {{{ Avatar }}}
+            {{{ Avatar }}}
           </div>
           {{{ Form }}}
           <div class="form_wrapper">
             {{{ Links }}}
-          <div/>
-        <main/>
-        <div  id="profile-modal"></div>
+          </div>
+          <div id="profile-modal"></div>
+        </main>
       </div>`;
   }
 }

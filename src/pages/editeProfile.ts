@@ -8,8 +8,7 @@ import Input from '../components/Input';
 import ErrorMessage from '../components/InputErrorMessage';
 import { editeProfileFormInputs } from '../const/editeProfileForm';
 import { withUser } from '../store/utils';
-import { userController } from '../api/user/userController';
-import { IChangeUserReq } from '../api/user/type';
+import userController from '../api/user/userController';
 import { goToPath } from '../helpers/goToPath';
 
 class EditeProfile extends Block {
@@ -52,9 +51,7 @@ class EditeProfile extends Block {
           if (!formValidate(this.state)) {
             return;
           }
-          userController.changeUser(toFormData(this.state)).then(() => {
-            goToPath('/settings');
-          });
+          userController.changeUser(toFormData(this.state)).then(() => goToPath('/settings'));
         },
       }),
     });

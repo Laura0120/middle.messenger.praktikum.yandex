@@ -8,7 +8,7 @@ import ErrorMessage from '../components/InputErrorMessage';
 import Input from '../components/Input';
 import Link from '../components/Link';
 import { registrationFormInputs } from '../const/registrationForm';
-import { authController } from '../api/auth/authController';
+import authController from '../api/auth/authController';
 import { goToPath } from '../helpers/goToPath';
 
 export class Registration extends Block {
@@ -51,9 +51,7 @@ export class Registration extends Block {
           if (!formValidate(this.state)) {
             return;
           }
-          authController.signUp(toFormData(this.state)).then(() => {
-            goToPath('/messenger');
-          });
+          authController.signUp(toFormData(this.state));
         },
       }),
       Link: new Link({

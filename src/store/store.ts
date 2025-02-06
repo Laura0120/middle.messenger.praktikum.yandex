@@ -4,28 +4,27 @@ export enum StoreEvents {
   Update = 'update',
 }
 
-interface IStore {
-  user: Record<string, string | null>;
-  selectedChat: Record<string, string | null>;
-  chats: [];
-  selectedChatMessages: [];
-}
+export type TStore = Record<string, Record<string, string | null> | []>;
+
 class Store extends EventBus {
-  private state: IStore;
+  private state: TStore;
 
   constructor() {
     super();
+
     this.state = {
-      user: {
-        avatar: null,
-        display_name: null,
-        email: null,
-        first_name: null,
-        id: null,
-        login: null,
-        phone: null,
-        second_name: null,
-      },
+      user: localStorage.getItem('user')
+        ? JSON.parse(localStorage.getItem('user') as string)
+        : {
+          avatar: null,
+          display_name: null,
+          email: null,
+          first_name: null,
+          id: null,
+          login: null,
+          phone: null,
+          second_name: null,
+        },
       selectedChat: {
         avatar: null,
         created_by: null,
@@ -44,7 +43,7 @@ class Store extends EventBus {
   }
 
   set(path: string, value: unknown) {
-    this.state = set(this.state, path, value) as IStore;
+    this.state = set(this.state, path, value) as TStore;
     this.emit(StoreEvents.Update);
   }
 }

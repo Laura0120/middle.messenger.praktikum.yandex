@@ -1,9 +1,11 @@
-import { IChangePasswordRes, IChangeUserReq, ISearchUserReq, ISearchUserRes } from './type';
+import { ISearchUserRes } from './type';
 import user from './user';
 import store from '../../store/store';
+import { goToPath } from '../../helpers/goToPath';
+import authController from '../auth/authController';
 
 class UserController {
-  searchUser(data: ISearchUserReq) {
+  searchUser(data: Record<string, string>) {
     return user
       .searchUser(data)
       .then((users) => users as ISearchUserRes[])
@@ -13,29 +15,30 @@ class UserController {
       });
   }
 
-  changeUser(data: IChangeUserReq) {
-    return user.changeUser(data).catch((error) => {
-      console.error('Ошибка редактирования профиля', error);
-    });
+  changeUser(data: Record<string, string>) {
+    return user
+      .changeUser(data)
+      .then((data) => {
+        store.set('user', data);
+        localStorage.setItem('user', JSON.stringify(data));
+      })
+      .then(() => goToPath('/profile'))
+      .catch((error) => console.error('Ошибка редактирования профиля', error));
   }
 
   changeAvatar(data: FormData) {
     return user
       .changeAvatar(data)
-      .then((user) => {
-        store.set('user', user);
-        localStorage.setItem('user', JSON.stringify(user));
-      })
-      .catch((error) => {
-        console.error('Ошибка изменения аватара', error);
-      });
+      .then(() => authController.getUser())
+      .catch((error) => console.error('Ошибка изменения аватара', error));
   }
 
-  changePassword(data: IChangePasswordRes) {
-    return user.changePassword(data).catch((error) => {
-      console.error('Ошибка изменения пароля', error);
-    });
+  changePassword(data: Record<string, string>) {
+    return user
+      .changePassword(data)
+      .then(() => goToPath('/profile'))
+      .catch((error) => console.error('Ошибка изменения пароля', error));
   }
 }
 
-export const userController = new UserController();
+export default new UserController();

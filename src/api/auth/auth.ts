@@ -1,13 +1,12 @@
-import { ISignInReq, ISignUpReq } from './type';
 import { HTTPTransport } from '../apiService';
 
 const authAPIInstance = new HTTPTransport('/api/v2/auth');
 
-function signUp(data: ISignUpReq) {
+function signUp(data: Record<string, string>) {
   return authAPIInstance.post('/signup', { data });
 }
 
-function signIn(data: ISignInReq) {
+function signIn(data: Record<string, string>) {
   return authAPIInstance.post('/signin', { data });
 }
 

@@ -1,9 +1,5 @@
-export function isObject(obj: unknown): obj is Record<string, unknown> {
-  return typeof obj === 'object' && !Array.isArray(obj) && obj !== null;
-}
-export function isArray(value: unknown): value is Array<unknown> {
-  return Array.isArray(value);
-}
+import isObject from './isObject';
+import isArray from './isArray';
 
 export function isEqual(lhs: unknown, rhs: unknown): boolean {
   if (typeof lhs !== typeof rhs) {

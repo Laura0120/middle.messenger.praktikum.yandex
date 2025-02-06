@@ -9,7 +9,7 @@ import Input from '../components/Input';
 import Link from '../components/Link';
 import { loginFormInputs } from '../const/loginForm';
 import { goToPath } from '../helpers/goToPath';
-import { authController } from '../api/auth/authController';
+import authController from '../api/auth/authController';
 import { withUser } from '../store/utils';
 
 class Login extends Block {

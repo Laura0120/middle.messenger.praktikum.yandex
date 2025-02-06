@@ -1,37 +1,24 @@
-import { ISignInReq, ISignUpReq } from './type';
 import auth from './auth';
 import store from '../../store/store';
 import { goToPath } from '../../helpers/goToPath';
+import ChatsController from '../chats/chatsController';
 
 class AuthController {
-  signUp(data: ISignUpReq) {
+  signUp(data: Record<string, string>) {
     return auth
       .signUp(data)
-      .then(() => {
-        auth.getUser().then((user) => {
-          store.set('user', user);
-          localStorage.setItem('user', JSON.stringify(user));
-        });
-      })
-      .catch((error) => {
-        console.error('Ошибка регистрации пользователя', error);
-      });
+      .then(() => this.getUser())
+      .catch((error) => console.error('Ошибка регистрации пользователя', error));
   }
 
-  signIn(data: ISignInReq) {
+  signIn(data: Record<string, string>) {
     return auth
       .signIn(data)
-      .then(() => {
-        auth.getUser();
-      })
-      .then(() => {
-        goToPath('/messenger');
-      })
+      .then(() => this.getUser())
+      .then(() => goToPath('/messenger'))
       .catch((error) => {
         if (error.reason === 'User already in system') {
-          this.getUser().then(() => {
-            goToPath('/messenger');
-          });
+          return this.getUser().then(() => goToPath('/messenger'));
         }
       });
   }
@@ -41,22 +28,26 @@ class AuthController {
       .logout()
       .then(() => {
         store.set('user', {});
+        store.set('chats', []);
+        store.set('selectedChat', {});
+        // store.set('selectedChatMessages', []);
         goToPath('/');
       })
-      .catch((error) => {
-        console.error('Ошибка выхода пользователя', error);
-      })
+      .catch((error) => console.error('Ошибка выхода пользователя', error))
       .finally(() => {
         localStorage.removeItem('user');
       });
   }
 
   getUser() {
-    return auth.getUser().then((user) => {
-      store.set('user', user);
-      localStorage.setItem('user', JSON.stringify(user));
-    });
+    return auth
+      .getUser()
+      .then((user) => {
+        store.set('user', user);
+        localStorage.setItem('user', JSON.stringify(user));
+      })
+      .then(() => ChatsController.getChats({}));
   }
 }
 
-export const authController = new AuthController();
+export default new AuthController();

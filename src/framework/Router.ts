@@ -1,7 +1,6 @@
 import { Route } from './Route';
 import { BlockProps, BlockClass } from './Block';
 import { ISearchUserRes } from '../api/user/type';
-import { authController } from '../api/auth/authController';
 
 export class Router {
   static __instance: Router;
@@ -44,13 +43,10 @@ export class Router {
       : null;
 
     if (!user || !user.id) {
-      authController.getUser();
       this.go('/');
     } else if (user && user.id && window.location.pathname === '/') {
-      authController.getUser();
       this.go('/messenger');
     } else {
-      authController.getUser();
       this._onRoute(window.location.pathname);
     }
   }

@@ -1,13 +1,12 @@
-import { IChangePasswordRes, IChangeUserReq, ISearchUserReq } from './type';
 import { HTTPTransport } from '../apiService';
 
 const userAPIInstance = new HTTPTransport('/api/v2/user');
 
-function searchUser(data: ISearchUserReq) {
+function searchUser(data: Record<string, string>) {
   return userAPIInstance.post('/search', { data });
 }
 
-function changeUser(data: IChangeUserReq) {
+function changeUser(data: Record<string, string>) {
   return userAPIInstance.put('/profile', { data });
 }
 
@@ -15,7 +14,7 @@ function changeAvatar(data: FormData) {
   return userAPIInstance.put('/profile/avatar', { data });
 }
 
-function changePassword(data: IChangePasswordRes) {
+function changePassword(data: Record<string, string>) {
   return userAPIInstance.put('/password', { data });
 }
 
