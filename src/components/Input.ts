@@ -71,9 +71,6 @@ export default class Input extends Block {
     if (this.props.disabled) {
       attributes.push('disabled');
     }
-    if (this.props.value) {
-      attributes.push(`value=${this.props.value}`);
-    }
 
     return `<input ${attributes.join(' ')} 
         id="{{name}}" 
