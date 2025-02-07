@@ -23,6 +23,9 @@ class EditeProfile extends Block {
             new InputBlock({
               Label: new Label({ name, label: placeholder ?? '' }),
               Input: new Input({
+                attr: {
+                  value: props.user[name] ?? '',
+                },
                 name,
                 type,
                 placeholder,
@@ -56,7 +59,7 @@ class EditeProfile extends Block {
       }),
     });
     this.state = Object.keys(editeProfileFormInputs).reduce<TFormState>((state, inputName) => {
-      state[inputName] = { value: '', valid: true };
+      state[inputName] = { value: this.props.user[inputName], valid: true };
       return state;
     }, {});
   }

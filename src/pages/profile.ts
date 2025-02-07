@@ -53,12 +53,14 @@ class Profile extends Block {
             new InputBlock({
               Label: new Label({ name, label: placeholder ?? '' }),
               Input: new Input({
+                attr: {
+                  value: props.user[name] ?? '',
+                },
                 name,
                 type,
                 placeholder,
                 errorMessage,
                 disabled,
-                value: props.user?.[name],
               }),
             }),
         ),
