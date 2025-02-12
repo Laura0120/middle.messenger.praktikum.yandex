@@ -1,21 +1,20 @@
-import Block from '../framework/Block';
+import Block, { BlockProps } from '../framework/Block';
 import Button from '../components/Button';
-import { formValidate, getFormData, TFormState } from '../helpers/formValidation';
+import { formValidate, TFormState, toFormData } from '../helpers/formValidation';
 import Form from '../components/Form';
 import InputBlock from '../components/InputBlock';
 import Label from '../components/Label';
 import Input from '../components/Input';
 import ErrorMessage from '../components/InputErrorMessage';
-import Navigation from '../components/Navigation';
 import { changePasswordForm } from '../const/changePasswordForm';
+import { withUser } from '../store/utils';
+import userController from '../api/user/userController';
+import { goToPath } from '../helpers/goToPath';
 
-interface IChangePasswordProps {
-  Navigation: Navigation;
-}
-export class ChangePassword extends Block {
+class ChangePassword extends Block {
   protected state: TFormState;
 
-  constructor(props: IChangePasswordProps) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       Form: new Form({
@@ -52,7 +51,7 @@ export class ChangePassword extends Block {
           if (!formValidate(this.state)) {
             return;
           }
-          console.log(getFormData(this.state));
+          userController.changePassword(toFormData(this.state)).then(() => goToPath('/settings'));
         },
       }),
     });
@@ -64,10 +63,7 @@ export class ChangePassword extends Block {
   }
 
   override render(): string {
-    return `<div class="page" id="app">
-        <header>
-          {{{ Navigation }}}  
-        </header>
+    return `<div class="page">
         <main>
           <h1>Смена пароля</h1>
           {{{ Form }}}
@@ -75,3 +71,4 @@ export class ChangePassword extends Block {
       </div>`;
   }
 }
+export default withUser(ChangePassword);

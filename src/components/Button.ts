@@ -16,6 +16,6 @@ export default class Button extends Block {
   }
 
   override render() {
-    return '<button type="{{type}}" class="{{class}}">{{text}}<button/>';
+    return '<button type="{{type}}" class="{{class}}">{{{text}}}<button/>';
   }
 }

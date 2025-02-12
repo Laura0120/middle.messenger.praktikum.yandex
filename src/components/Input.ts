@@ -1,7 +1,7 @@
-import Block from '../framework/Block';
+import Block, { BlockProps } from '../framework/Block';
 import { IInput } from '../const/inputs';
 
-export interface IInputProps extends IInput {
+export interface IInputProps extends IInput, BlockProps {
   setInputValid?: (valid: boolean) => void;
   setInputValue?: (value: string) => void;
 }

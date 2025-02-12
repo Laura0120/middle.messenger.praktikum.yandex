@@ -1,23 +1,17 @@
-import Block from '../framework/Block.js';
+import Block, { BlockProps } from '../framework/Block.js';
 import Link from '../components/Link';
-import Navigation from '../components/Navigation';
+import { goToPath } from '../helpers/goToPath';
 
-interface IError404Props {
-  Navigation: Navigation;
-}
 export class Error404 extends Block {
-  constructor(props: IError404Props) {
+  constructor(props: BlockProps) {
     super({
       ...props,
-      Link: new Link({ href: '#', text: 'Назад к чатам', class: 'link' }),
+      Link: new Link({ href: '#', text: 'Назад к чатам', class: 'link', onClick: () => goToPath('/messenger') }),
     });
   }
 
   override render() {
-    return `<div class="page" id="app">
-      <header>
-        {{{ Navigation }}}
-      </header>
+    return `<div class="page">
       <main>
         <h1>404</h1>
         <p>Не туда попали</p>

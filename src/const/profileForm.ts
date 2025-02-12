@@ -1,11 +1,6 @@
 import { emailInput, firstNameInput, IInput, loginInput, phoneInput, secondNameInput } from './inputs';
 
 export const profileFormInputs: Record<string, IInput> = {
-  avatar: {
-    name: 'avatar',
-    placeholder: '',
-    type: 'file',
-  },
   email: { ...emailInput, disabled: true },
   login: { ...loginInput, disabled: true },
   first_name: { ...firstNameInput, disabled: true },

@@ -12,3 +12,11 @@ export const getFormData = (formState: TFormState): Record<string, string> => {
     return data;
   }, {});
 };
+
+export function toFormData(formState: TFormState): Record<string, string> {
+  return Object.entries(formState).reduce<Record<string, string>>((accumulator, currentValue) => {
+    const fieldName = currentValue[0];
+    accumulator[fieldName] = currentValue[1].value;
+    return accumulator;
+  }, {});
+}

@@ -1,21 +1,20 @@
-import Block from '../framework/Block';
+import Block, { BlockProps } from '../framework/Block';
 import Button from '../components/Button';
-import { formValidate, getFormData, TFormState } from '../helpers/formValidation';
+import { formValidate, TFormState, toFormData } from '../helpers/formValidation';
 import Form from '../components/Form';
 import InputBlock from '../components/InputBlock';
 import Label from '../components/Label';
 import Input from '../components/Input';
 import ErrorMessage from '../components/InputErrorMessage';
-import Navigation from '../components/Navigation';
 import { editeProfileFormInputs } from '../const/editeProfileForm';
+import { withUser } from '../store/utils';
+import userController from '../api/user/userController';
+import { goToPath } from '../helpers/goToPath';
 
-interface IEditeProfileProps {
-  Navigation: Navigation;
-}
-export class EditeProfile extends Block {
+class EditeProfile extends Block {
   protected state: TFormState;
 
-  constructor(props: IEditeProfileProps) {
+  constructor(props: BlockProps) {
     super({
       ...props,
       Form: new Form({
@@ -24,6 +23,9 @@ export class EditeProfile extends Block {
             new InputBlock({
               Label: new Label({ name, label: placeholder ?? '' }),
               Input: new Input({
+                attr: {
+                  value: props.user[name] ?? '',
+                },
                 name,
                 type,
                 placeholder,
@@ -52,21 +54,18 @@ export class EditeProfile extends Block {
           if (!formValidate(this.state)) {
             return;
           }
-          console.log(getFormData(this.state));
+          userController.changeUser(toFormData(this.state)).then(() => goToPath('/settings'));
         },
       }),
     });
     this.state = Object.keys(editeProfileFormInputs).reduce<TFormState>((state, inputName) => {
-      state[inputName] = { value: '', valid: true };
+      state[inputName] = { value: this.props.user[inputName], valid: true };
       return state;
     }, {});
   }
 
   override render(): string {
-    return `<div class="page" id="app">
-        <header>
-            {{{ Navigation }}}
-        </header>
+    return `<div class="page">
         <main>
           <h1>Редактирование профиля</h1>
           {{{ Form }}}
@@ -74,3 +73,4 @@ export class EditeProfile extends Block {
       </div>`;
   }
 }
+export default withUser(EditeProfile);
