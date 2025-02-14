@@ -30,13 +30,13 @@ export class HTTPTransport {
     this.baseURL = `${this.baseURL}${path}`;
   }
 
-  get: HTTPMethod = (url: string, options?: Options) => this.request(url, METHOD.GET, { ...options });
+  get: HTTPMethod = (url, options) => this.request(url, METHOD.GET, { ...options });
 
-  post: HTTPMethod = (url: string, options?: Options) => this.request(url, METHOD.POST, { ...options });
+  post: HTTPMethod = (url, options) => this.request(url, METHOD.POST, { ...options });
 
-  put: HTTPMethod = (url: string, options?: Options) => this.request(url, METHOD.PUT, { ...options });
+  put: HTTPMethod = (url, options) => this.request(url, METHOD.PUT, { ...options });
 
-  delete: HTTPMethod = (url: string, options?: Options) => this.request(url, METHOD.DELETE, { ...options });
+  delete: HTTPMethod = (url, options) => this.request(url, METHOD.DELETE, { ...options });
 
   request = <R = unknown>(url: string, method: METHOD, options: Options, timeout = 50000): Promise<R> => {
     const { headers = {}, data, withCredentials = true, responseType = 'json' } = options;
