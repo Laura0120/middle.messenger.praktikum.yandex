@@ -1,16 +1,31 @@
-Мессаджер
-Приложение для общения
+# Chat App
 
-Дизайн
-https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=1-616&node-type=frame&t=pEGSV33iFTN9PPX4-0
+SPA-приложения без использования фреймворков и библиотек
 
-Установка
-Установить зависимости проекта: npm install
+### Используемые технологии
+- **HTML**
+- **JavaScript/TypeScript**
+- **CSS/postcss**
+- **Handlebars**
+- **Vite**
+- **Husky/lint-staged**
+- **Mocha/Chai/JSDOM**
 
-Собрать проект: npm run build
+#### Netlify:
+https://laura-messenger.netlify.app/
 
-Запустить проект на localhost: npm run dev
+### Figma:
+https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?node-id=1-537&t=dviuMeNV8WVw0gVQ-0
 
-Ссылки:
-На веб-приложение:
-Netlify: https://laura-messenger.netlify.app/
+### Команды проекта
+
+- Start and build project: `npm run start`
+- Start dev server: `npm run dev`
+- Preview build project: `npm run preview`
+- Start tests: `npm run test`
+- Start tests once : `npm run test:ci`
+- Run linter: `npm run lint`
+- Fix linter issues: `npm run lint:fix`
+- Run stylelint: `npm run lint:style`
+- Fix stylelint issues: `npm run lint:style:fix`
+

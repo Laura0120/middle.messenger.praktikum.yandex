@@ -21,6 +21,7 @@ function queryStringify(data: Record<string, unknown> | FormData): string {
   const queryStringArray = Object.entries(data).map((item) => `${item[0]}=${item[1]}`);
   return `?${queryStringArray.join('&')}`;
 }
+type HTTPMethod = <R = unknown>(url: string, options?: Options) => Promise<R>;
 
 export class HTTPTransport {
   baseURL: string = 'https://ya-praktikum.tech';
@@ -29,15 +30,15 @@ export class HTTPTransport {
     this.baseURL = `${this.baseURL}${path}`;
   }
 
-  get = (url: string, options?: Options) => this.request(url, METHOD.GET, { ...options });
+  get: HTTPMethod = (url, options) => this.request(url, METHOD.GET, { ...options });
 
-  post = (url: string, options?: Options) => this.request(url, METHOD.POST, { ...options });
+  post: HTTPMethod = (url, options) => this.request(url, METHOD.POST, { ...options });
 
-  put = (url: string, options?: Options) => this.request(url, METHOD.PUT, { ...options });
+  put: HTTPMethod = (url, options) => this.request(url, METHOD.PUT, { ...options });
 
-  delete = (url: string, options?: Options) => this.request(url, METHOD.DELETE, { ...options });
+  delete: HTTPMethod = (url, options) => this.request(url, METHOD.DELETE, { ...options });
 
-  request = (url: string, method: METHOD, options: Options, timeout = 50000): Promise<unknown> => {
+  request = <R = unknown>(url: string, method: METHOD, options: Options, timeout = 50000): Promise<R> => {
     const { headers = {}, data, withCredentials = true, responseType = 'json' } = options;
 
     return new Promise((resolve, reject) => {
